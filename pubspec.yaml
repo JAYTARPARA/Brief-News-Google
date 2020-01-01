@@ -1,6 +1,6 @@
 name: google_news
 description: Brief News - A google news app which will show you latest news based on category all around the world.
-version: 1.0.0+2
+version: 1.0.0+3
 
 environment:
   sdk: ">=2.1.0 <3.0.0"

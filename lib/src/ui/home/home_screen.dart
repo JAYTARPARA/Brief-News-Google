@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
+// import 'package:cached_network_image/cached_network_image.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -91,7 +91,8 @@ class HomeScreen extends StatelessWidget {
         style: Theme.of(context).textTheme.caption.merge(
               TextStyle(
                 fontSize: 18.0,
-                color: Color(0xFF325384).withOpacity(0.5),
+                // color: Color(0xFF325384).withOpacity(0.5),
+                color: Colors.white.withOpacity(0.5),
               ),
             ),
       ),
@@ -106,7 +107,8 @@ class HomeScreen extends StatelessWidget {
         style: Theme.of(context).textTheme.subtitle.merge(
               TextStyle(
                 fontSize: 18.0,
-                color: Color(0xFF325384).withOpacity(0.8),
+                // color: Color(0xFF325384).withOpacity(0.8),
+                color: Colors.white.withOpacity(0.8),
               ),
             ),
       ),
@@ -468,7 +470,8 @@ class _WidgetLatestNewsState extends State<WidgetLatestNews> {
                               maxLines: 3,
                               style: TextStyle(
                                 fontSize: 16.0,
-                                color: Color(0xFF325384),
+                                // color: Color(0xFF325384),
+                                color: Colors.white,
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
@@ -478,7 +481,8 @@ class _WidgetLatestNewsState extends State<WidgetLatestNews> {
                                 Icon(
                                   Icons.launch,
                                   size: 12.0,
-                                  color: Color(0xFF325384).withOpacity(0.5),
+                                  // color: Color(0xFF325384).withOpacity(0.5),
+                                  color: Colors.white.withOpacity(0.5),
                                 ),
                                 SizedBox(
                                   width: 4.0,
@@ -486,7 +490,8 @@ class _WidgetLatestNewsState extends State<WidgetLatestNews> {
                                 Text(
                                   itemArticle.source.name,
                                   style: TextStyle(
-                                    color: Color(0xFF325384).withOpacity(0.5),
+                                    // color: Color(0xFF325384).withOpacity(0.5),
+                                    color: Colors.white.withOpacity(0.5),
                                     fontSize: 12.0,
                                   ),
                                 ),
