@@ -21,14 +21,12 @@ class HomeScreen extends StatelessWidget {
     FirebaseAdMob.instance
         .initialize(appId: 'ca-app-pub-4800441463353851~6558594714')
         .then((response) {
-      Timer.periodic(new Duration(seconds: 60), (timer) {
-        myBanner
-          ..load()
-          ..show(
-            // Banner Position
-            anchorType: AnchorType.bottom,
-          );
-      });
+      myBanner
+        ..load()
+        ..show(
+          // Banner Position
+          anchorType: AnchorType.bottom,
+        );
     });
 
     FirebaseAdMob.instance
@@ -55,52 +53,74 @@ class HomeScreen extends StatelessWidget {
     var mediaQuery = MediaQuery.of(context);
     double paddingTop = mediaQuery.padding.top;
 
-    return Scaffold(
-      key: scaffoldState,
-      body: DoubleBackToCloseApp(
-        snackBar: const SnackBar(
-          content: Text('Press again to exit'),
-        ),
-        child: BlocProvider<HomeBloc>(
-          create: (context) => HomeBloc(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  color: Color(0xFFF1F5F9),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
+    double getSmartBannerHeight(MediaQueryData mediaQuery) {
+      // https://developers.google.com/admob/android/banner#smart_banners
+      if (Platform.isAndroid) {
+        if (mediaQuery.size.height > 720) return 90.0;
+        if (mediaQuery.size.height > 400) return 50.0;
+        return 32.0;
+      }
+      // https://developers.google.com/admob/ios/banner#smart_banners
+      // Smart Banners on iPhones have a height of 50 points in portrait and 32 points in landscape.
+      // On iPads, height is 90 points in both portrait and landscape.
+      if (Platform.isIOS) {
+        // if (iPad) return 90.0;
+        if (mediaQuery.orientation == Orientation.portrait) return 50.0;
+        return 32.0;
+      }
+      // No idea, just return a common value.
+      return 50.0;
+    }
+
+    return Padding(
+      padding: EdgeInsets.only(bottom: getSmartBannerHeight(mediaQuery)),
+      child: Scaffold(
+        key: scaffoldState,
+        body: DoubleBackToCloseApp(
+          snackBar: const SnackBar(
+            content: Text('Press again to exit'),
+          ),
+          child: BlocProvider<HomeBloc>(
+            create: (context) => HomeBloc(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    color: Color(0xFFF1F5F9),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                    ),
+                  ),
+                  padding: EdgeInsets.only(
+                    top: paddingTop + 16.0,
+                    bottom: 16.0,
+                  ),
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          WidgetTitle(strToday),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 12.0,
+                      ),
+                      WidgetCategory(),
+                    ],
                   ),
                 ),
-                padding: EdgeInsets.only(
-                  top: paddingTop + 16.0,
-                  bottom: 16.0,
+                SizedBox(
+                  height: 16.0,
                 ),
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        WidgetTitle(strToday),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 12.0,
-                    ),
-                    WidgetCategory(),
-                  ],
+                _buildWidgetLabelLatestNews(context),
+                _buildWidgetSubtitleLatestNews(context),
+                Expanded(
+                  child: WidgetLatestNews(),
                 ),
-              ),
-              SizedBox(
-                height: 16.0,
-              ),
-              _buildWidgetLabelLatestNews(context),
-              _buildWidgetSubtitleLatestNews(context),
-              Expanded(
-                child: WidgetLatestNews(),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
