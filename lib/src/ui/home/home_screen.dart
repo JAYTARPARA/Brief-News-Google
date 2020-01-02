@@ -21,12 +21,36 @@ class HomeScreen extends StatelessWidget {
     FirebaseAdMob.instance
         .initialize(appId: 'ca-app-pub-4800441463353851~6558594714')
         .then((response) {
+      Timer.periodic(new Duration(seconds: 60), (timer) {
+        myBanner
+          ..load()
+          ..show(
+            // Banner Position
+            anchorType: AnchorType.bottom,
+          );
+      });
+    });
+
+    FirebaseAdMob.instance
+        .initialize(appId: 'ca-app-pub-4800441463353851~6558594714')
+        .then((response) {
+      Timer.periodic(new Duration(seconds: 600), (timer) {
+        myInterstitial
+          ..load()
+          ..show();
+      });
+    });
+
+    FirebaseAdMob.instance
+        .initialize(appId: 'ca-app-pub-4800441463353851~6558594714')
+        .then((response) {
       Timer.periodic(new Duration(seconds: 900), (timer) {
         myInterstitial
           ..load()
           ..show();
       });
     });
+
     var strToday = getStrToday();
     var mediaQuery = MediaQuery.of(context);
     double paddingTop = mediaQuery.padding.top;
@@ -35,7 +59,7 @@ class HomeScreen extends StatelessWidget {
       key: scaffoldState,
       body: DoubleBackToCloseApp(
         snackBar: const SnackBar(
-          content: Text('Press again to exit app'),
+          content: Text('Press again to exit'),
         ),
         child: BlocProvider<HomeBloc>(
           create: (context) => HomeBloc(),
@@ -85,9 +109,12 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildWidgetSubtitleLatestNews(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      padding: EdgeInsets.symmetric(
+        horizontal: 16.0,
+        vertical: 5,
+      ),
       child: Text(
-        'Top stories at the moment',
+        'Top headlines at the moment',
         style: Theme.of(context).textTheme.caption.merge(
               TextStyle(
                 fontSize: 18.0,
@@ -341,7 +368,7 @@ class _WidgetLatestNewsState extends State<WidgetLatestNews> {
             itemArticle.urlToImage =
                 'https://i.ibb.co/9NNWWcq/img-not-found.jpg';
           }
-          if (index == 0) {
+          if (index == 0 || (index % 6) == 0) {
             return Stack(
               children: <Widget>[
                 ClipRRect(
@@ -546,5 +573,18 @@ InterstitialAd myInterstitial = InterstitialAd(
   // targetingInfo: targetingInfo,
   listener: (MobileAdEvent event) {
     print("InterstitialAd event is $event");
+  },
+);
+
+BannerAd myBanner = BannerAd(
+  // Replace the testAdUnitId with an ad unit id from the AdMob dash.
+  // https://developers.google.com/admob/android/test-ads
+  // https://developers.google.com/admob/ios/test-ads
+  // adUnitId: BannerAd.testAdUnitId,
+  adUnitId: 'ca-app-pub-4800441463353851/6951446578',
+  size: AdSize.smartBanner,
+  // targetingInfo: targetingInfo,
+  listener: (MobileAdEvent event) {
+    print("BannerAd event is $event");
   },
 );
