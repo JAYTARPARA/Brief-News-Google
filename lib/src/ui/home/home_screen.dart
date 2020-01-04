@@ -21,17 +21,6 @@ class HomeScreen extends StatelessWidget {
     FirebaseAdMob.instance
         .initialize(appId: 'ca-app-pub-4800441463353851~6558594714')
         .then((response) {
-      myBanner
-        ..load()
-        ..show(
-          // Banner Position
-          anchorType: AnchorType.bottom,
-        );
-    });
-
-    FirebaseAdMob.instance
-        .initialize(appId: 'ca-app-pub-4800441463353851~6558594714')
-        .then((response) {
       Timer.periodic(new Duration(seconds: 600), (timer) {
         myInterstitial
           ..load()

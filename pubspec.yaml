@@ -1,6 +1,6 @@
 name: google_news
 description: Brief News - A google news app which will show you latest news based on category from all around the world.
-version: 1.0.0+6
+version: 1.0.0+7
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -13,10 +13,12 @@ dependencies:
   webview_flutter: ^0.3.18+1
   double_back_to_close_app: ^0.1.2
   firebase_admob: ^0.9.0+10
-  firebase_messaging: ^6.0.9
+  # firebase_messaging: ^6.0.9
   flutter_launcher_icons: ^0.7.2
   # rate_my_app: ^0.4.1
   # store_redirect: ^1.0.1
+  # flutter_one_signal: ^0.2.1
+  onesignal_flutter: ^2.0.0
 
   # A powerful Http client for Dart, which support interceptors, FormData, Request Cacellation,
   # File Downloading, Timeout, etc...

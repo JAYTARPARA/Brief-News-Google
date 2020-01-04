@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:google_news/src/ui/home/home_screen.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 // import 'package:rate_my_app/rate_my_app.dart';
 // import 'package:store_redirect/store_redirect.dart';
+// import 'package:flutter_one_signal/flutter_one_signal.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class App extends StatefulWidget {
   @override
@@ -13,83 +15,53 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  String _message = '';
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-
-  // RateMyApp rateMyApp = RateMyApp(
-  //   preferencesPrefix: 'rateMyApp_',
-  //   minDays: 3,
-  //   minLaunches: 5,
-  //   remindDays: 5,
-  //   remindLaunches: 6,
-  // );
-
-  // void showRate() {
-  //   // var _rateMyApp;
-  //   print('SHOWING RATE');
-  //   rateMyApp.init().then((_) {
-  //     if (rateMyApp.shouldOpenDialog) {
-  //       rateMyApp.showRateDialog(
-  //         context,
-  //         title: 'Rate this app',
-  //         message:
-  //             'If you like this app, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute.',
-  //         rateButton: 'RATE',
-  //         noButton: 'NO THANKS',
-  //         laterButton: 'MAYBE LATER',
-  //         listener: (button) {
-  //           switch (button) {
-  //             case RateMyAppDialogButton.rate:
-  //               print('Clicked on "Rate".');
-  //               StoreRedirect.redirect(androidAppId: "io.flutter.google_news");
-  //               break;
-  //             case RateMyAppDialogButton.later:
-  //               print('Clicked on "Later".');
-  //               break;
-  //             case RateMyAppDialogButton.no:
-  //               print('Clicked on "No".');
-  //               break;
-  //           }
-
-  //           return true;
-  //         },
-  //         ignoreIOS: false,
-  //         dialogStyle: DialogStyle(),
-  //       );
-  //     }
-  //   });
-  // }
-
   @override
   void initState() {
     super.initState();
-    getMessage();
+    initOneSignal();
     // showRate();
   }
 
-  void getMessage() {
-    _firebaseMessaging.getToken().then((token) {
-      print(token);
+  void initOneSignal() {
+    OneSignal.shared.init("7f1483d5-519c-4389-9808-cafa8d99a89d");
+
+    // OneSignal.shared.setNotificationReceivedHandler((OSNotification notification) {
+    //   // will be called whenever a notification is received
+    // });
+
+    // OneSignal.shared.setNotificationOpenedHandler((OSNotificationOpenedResult result) {
+    //   // will be called whenever a notification is opened/button pressed.
+    // });
+
+    OneSignal.shared.setPermissionObserver((OSPermissionStateChanges changes) {
+      // will be called whenever the permission changes
+      // (ie. user taps Allow on the permission prompt in iOS)
     });
 
-    _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print('on message $message');
-        setState(() => _message = message["notification"]["title"]);
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print('on resume $message');
-        setState(() => _message = message["notification"]["title"]);
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print('on launch $message');
-        setState(() => _message = message["notification"]["title"]);
-      },
-    );
+    // OneSignal.shared.setSubscriptionObserver((OSSubscriptionStateChanges changes) {
+    //   // will be called whenever the subscription changes
+    //   //(ie. user gets registered with OneSignal and gets a user ID)
+    // });
+
+    OneSignal.shared.setEmailSubscriptionObserver((OSEmailSubscriptionStateChanges emailChanges) {
+      // will be called whenever then user's email subscription changes
+      // (ie. OneSignal.setEmail(email) is called and the user gets registered
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    FirebaseAdMob.instance
+        .initialize(appId: 'ca-app-pub-4800441463353851~6558594714')
+        .then((response) {
+      myBanner
+        ..load()
+        ..show(
+          // Banner Position
+          anchorType: AnchorType.bottom,
+        );
+    });
+
     FirebaseAdMob.instance
         .initialize(appId: 'ca-app-pub-4800441463353851~6558594714')
         .then((response) {
