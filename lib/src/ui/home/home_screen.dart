@@ -21,6 +21,16 @@ class HomeScreen extends StatelessWidget {
     FirebaseAdMob.instance
         .initialize(appId: 'ca-app-pub-4800441463353851~6558594714')
         .then((response) {
+      Timer.periodic(new Duration(seconds: 360), (timer) {
+        myInterstitial
+          ..load()
+          ..show();
+      });
+    });
+
+    FirebaseAdMob.instance
+        .initialize(appId: 'ca-app-pub-4800441463353851~6558594714')
+        .then((response) {
       Timer.periodic(new Duration(seconds: 600), (timer) {
         myInterstitial
           ..load()
@@ -229,6 +239,7 @@ class _WidgetCategoryState extends State<WidgetCategory> {
 
   @override
   void initState() {
+    // ignore: close_sinks
     final homeBloc = BlocProvider.of<HomeBloc>(context);
     homeBloc.add(DataEvent(listCategories[indexSelectedCategory].title));
     super.initState();
@@ -236,6 +247,7 @@ class _WidgetCategoryState extends State<WidgetCategory> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: close_sinks
     final homeBloc = BlocProvider.of<HomeBloc>(context);
     return Container(
       height: 74.0,
@@ -328,6 +340,7 @@ class _WidgetLatestNewsState extends State<WidgetLatestNews> {
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
+    // ignore: close_sinks
     final HomeBloc homeBloc = BlocProvider.of<HomeBloc>(context);
 
     return Padding(
@@ -503,7 +516,7 @@ class _WidgetLatestNewsState extends State<WidgetLatestNews> {
                             Text(
                               itemArticle.title,
                               overflow: TextOverflow.ellipsis,
-                              maxLines: 3,
+                              maxLines: 2,
                               style: TextStyle(
                                 fontSize: 16.0,
                                 // color: Color(0xFF325384),
@@ -567,8 +580,15 @@ class _WidgetLatestNewsState extends State<WidgetLatestNews> {
 }
 
 MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
-  keywords: <String>['games', 'cricket'],
-  contentUrl: 'https://flutter.io',
+  keywords: <String>[
+    'Leadership',
+    'Hearst',
+    'Journalism',
+    'Entertainment',
+    'Health',
+    'Real Estate'
+  ],
+  contentUrl: 'https://www.hearst.com/',
   childDirected: false,
   testDevices: <String>[], // Android emulators are considered test devices
 );
@@ -579,7 +599,7 @@ InterstitialAd myInterstitial = InterstitialAd(
   // https://developers.google.com/admob/ios/test-ads
   // adUnitId: InterstitialAd.testAdUnitId,
   adUnitId: 'ca-app-pub-4800441463353851/8993186368',
-  // targetingInfo: targetingInfo,
+  targetingInfo: targetingInfo,
   listener: (MobileAdEvent event) {
     print("InterstitialAd event is $event");
   },
