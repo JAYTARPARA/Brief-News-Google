@@ -114,4 +114,4 @@ dependencies {
     implementation 'com.onesignal:OneSignal:[3.11.2, 3.99.99]'
 }
 
-apply plugin: 'com.google.gms.google-services'
+// apply plugin: 'com.google.gms.google-services'
