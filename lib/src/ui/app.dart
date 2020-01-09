@@ -4,6 +4,7 @@ import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:google_news/src/ui/home/home_screen.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:facebook_audience_network/facebook_audience_network.dart';
 
 class App extends StatefulWidget {
   @override
@@ -14,18 +15,20 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
+    FacebookAudienceNetwork.init();
     initOneSignal();
-    // showRate();
   }
 
   void initOneSignal() {
     OneSignal.shared.init("7f1483d5-519c-4389-9808-cafa8d99a89d");
 
-    OneSignal.shared.setNotificationReceivedHandler((OSNotification notification) {
+    OneSignal.shared
+        .setNotificationReceivedHandler((OSNotification notification) {
       // will be called whenever a notification is received
     });
 
-    OneSignal.shared.setNotificationOpenedHandler((OSNotificationOpenedResult result) {
+    OneSignal.shared
+        .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
       // will be called whenever a notification is opened/button pressed.
     });
 
@@ -34,12 +37,14 @@ class _AppState extends State<App> {
       // (ie. user taps Allow on the permission prompt in iOS)
     });
 
-    OneSignal.shared.setSubscriptionObserver((OSSubscriptionStateChanges changes) {
+    OneSignal.shared
+        .setSubscriptionObserver((OSSubscriptionStateChanges changes) {
       // will be called whenever the subscription changes
       //(ie. user gets registered with OneSignal and gets a user ID)
     });
 
-    OneSignal.shared.setEmailSubscriptionObserver((OSEmailSubscriptionStateChanges emailChanges) {
+    OneSignal.shared.setEmailSubscriptionObserver(
+        (OSEmailSubscriptionStateChanges emailChanges) {
       // will be called whenever then user's email subscription changes
       // (ie. OneSignal.setEmail(email) is called and the user gets registered
     });
@@ -47,21 +52,22 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    FirebaseAdMob.instance
-        .initialize(appId: 'ca-app-pub-4800441463353851~6558594714')
-        .then((response) {
-      myBanner
-        ..load()
-        ..show(
-          // Banner Position
-          anchorType: AnchorType.bottom,
-        );
-    });
+    // FirebaseAdMob.instance
+    //     .initialize(appId: 'ca-app-pub-4800441463353851~6558594714')
+    //     .then((response) {
+    //   myBanner
+    //     ..load()
+    //     ..show(
+    //       // Banner Position
+    //       anchorType: AnchorType.bottom,
+    //     );
+    // });
 
+    // 5 Minutes
     FirebaseAdMob.instance
         .initialize(appId: 'ca-app-pub-4800441463353851~6558594714')
         .then((response) {
-      Timer.periodic(new Duration(seconds: 180), (timer) {
+      Timer.periodic(new Duration(seconds: 300), (timer) {
         myInterstitial
           ..load()
           ..show();

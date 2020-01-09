@@ -12,22 +12,19 @@ import 'package:google_news/src/model/topheadlinesnews/response_top_headlines_ne
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_admob/firebase_admob.dart';
+import 'package:facebook_audience_network/facebook_audience_network.dart';
 
 final GlobalKey<ScaffoldState> scaffoldState = GlobalKey<ScaffoldState>();
 
 class HomeScreen extends StatelessWidget {
+  Widget _currentAd = SizedBox(
+    height: 0.0,
+    width: 0.0,
+  );
+
   @override
   Widget build(BuildContext context) {
-    FirebaseAdMob.instance
-        .initialize(appId: 'ca-app-pub-4800441463353851~6558594714')
-        .then((response) {
-      Timer.periodic(new Duration(seconds: 360), (timer) {
-        myInterstitial
-          ..load()
-          ..show();
-      });
-    });
-
+    // 10 Minutes
     FirebaseAdMob.instance
         .initialize(appId: 'ca-app-pub-4800441463353851~6558594714')
         .then((response) {
@@ -38,6 +35,7 @@ class HomeScreen extends StatelessWidget {
       });
     });
 
+    // 15 Minutes
     FirebaseAdMob.instance
         .initialize(appId: 'ca-app-pub-4800441463353851~6558594714')
         .then((response) {
@@ -53,26 +51,24 @@ class HomeScreen extends StatelessWidget {
     double paddingTop = mediaQuery.padding.top;
 
     double getSmartBannerHeight(MediaQueryData mediaQuery) {
-      // https://developers.google.com/admob/android/banner#smart_banners
       if (Platform.isAndroid) {
         if (mediaQuery.size.height > 720) return 90.0;
         if (mediaQuery.size.height > 400) return 50.0;
-        return 32.0;
+        return 0.0;
       }
-      // https://developers.google.com/admob/ios/banner#smart_banners
-      // Smart Banners on iPhones have a height of 50 points in portrait and 32 points in landscape.
-      // On iPads, height is 90 points in both portrait and landscape.
+
       if (Platform.isIOS) {
         // if (iPad) return 90.0;
         if (mediaQuery.orientation == Orientation.portrait) return 50.0;
         return 32.0;
       }
       // No idea, just return a common value.
-      return 50.0;
+      return 0.0;
     }
 
     return Padding(
-      padding: EdgeInsets.only(bottom: getSmartBannerHeight(mediaQuery)),
+      // padding: EdgeInsets.only(bottom: getSmartBannerHeight(mediaQuery)),
+      padding: EdgeInsets.only(bottom: 0.0),
       child: Scaffold(
         key: scaffoldState,
         body: DoubleBackToCloseApp(
@@ -118,11 +114,98 @@ class HomeScreen extends StatelessWidget {
                 Expanded(
                   child: WidgetLatestNews(),
                 ),
+                _showFacebookBannerads(context),
+                _showFacebookInterstitialAd(context),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  // At startup
+  Widget _showFacebookBannerads(BuildContext context) {
+    _currentAd = FacebookBannerAd(
+      placementId: "518293739032796_518337882361715",
+      bannerSize: BannerSize.STANDARD,
+      listener: (result, value) {
+        switch (result) {
+          case BannerAdResult.ERROR:
+            print("Error: $value");
+            break;
+          case BannerAdResult.LOADED:
+            print("Loaded: $value");
+            break;
+          case BannerAdResult.CLICKED:
+            print("Clicked: $value");
+            break;
+          case BannerAdResult.LOGGING_IMPRESSION:
+            print("Logging Impression: $value");
+            break;
+        }
+      },
+    );
+    return _currentAd;
+  }
+
+  // Not in used
+  Widget _showFacebookNativeBannerAd(BuildContext context) {
+    _currentAd = FacebookNativeAd(
+      placementId: "518293739032796_518294635699373",
+      adType: NativeAdType.NATIVE_BANNER_AD,
+      bannerAdSize: NativeBannerAdSize.HEIGHT_100,
+      width: double.infinity,
+      backgroundColor: Colors.blue,
+      titleColor: Colors.white,
+      descriptionColor: Colors.white,
+      buttonColor: Colors.deepPurple,
+      buttonTitleColor: Colors.white,
+      buttonBorderColor: Colors.white,
+      listener: (result, value) {
+        print("Native Banner Ad: $result --> $value");
+      },
+    );
+    return _currentAd;
+  }
+
+  // 2 Minutes
+  Widget _showFacebookInterstitialAd(BuildContext context) {
+    FacebookInterstitialAd.loadInterstitialAd(
+      placementId: "518293739032796_518365742358929",
+      listener: (result, value) {
+        print("Interstitial Ad: $result --> $value");
+        if (result == InterstitialAdResult.LOADED) {
+          FacebookInterstitialAd.showInterstitialAd(delay: 120000);
+        }
+        if (result == InterstitialAdResult.DISMISSED) {
+          FacebookInterstitialAd.destroyInterstitialAd();
+          showFbInterstitial(420000);
+        }
+      },
+    );
+    return SizedBox();
+  }
+
+  showFbInterstitial(time) {
+    FacebookInterstitialAd.loadInterstitialAd(
+      placementId: "518293739032796_518365742358929",
+      listener: (result, value) {
+        print("Interstitial Ad: $result --> $value");
+        if (result == InterstitialAdResult.LOADED) {
+          FacebookInterstitialAd.showInterstitialAd(delay: time);
+        }
+        if (result == InterstitialAdResult.DISMISSED) {
+          FacebookInterstitialAd.destroyInterstitialAd();
+          if (time == 420000) {
+            showFbInterstitial(720000);
+          } else if (time == 720000) {
+            showFbInterstitial(960000);
+          } else if (time == 960000) {
+            showFbInterstitial(1080000);
+          }
+        }
+      },
     );
   }
 
@@ -599,21 +682,21 @@ InterstitialAd myInterstitial = InterstitialAd(
   // https://developers.google.com/admob/ios/test-ads
   // adUnitId: InterstitialAd.testAdUnitId,
   adUnitId: 'ca-app-pub-4800441463353851/8993186368',
-  targetingInfo: targetingInfo,
+  // targetingInfo: targetingInfo,
   listener: (MobileAdEvent event) {
     print("InterstitialAd event is $event");
   },
 );
 
-BannerAd myBanner = BannerAd(
-  // Replace the testAdUnitId with an ad unit id from the AdMob dash.
-  // https://developers.google.com/admob/android/test-ads
-  // https://developers.google.com/admob/ios/test-ads
-  // adUnitId: BannerAd.testAdUnitId,
-  adUnitId: 'ca-app-pub-4800441463353851/6951446578',
-  size: AdSize.smartBanner,
-  // targetingInfo: targetingInfo,
-  listener: (MobileAdEvent event) {
-    print("BannerAd event is $event");
-  },
-);
+// BannerAd myBanner = BannerAd(
+//   // Replace the testAdUnitId with an ad unit id from the AdMob dash.
+//   // https://developers.google.com/admob/android/test-ads
+//   // https://developers.google.com/admob/ios/test-ads
+//   // adUnitId: BannerAd.testAdUnitId,
+//   adUnitId: 'ca-app-pub-4800441463353851/6951446578',
+//   size: AdSize.smartBanner,
+//   // targetingInfo: targetingInfo,
+//   listener: (MobileAdEvent event) {
+//     print("BannerAd event is $event");
+//   },
+// );

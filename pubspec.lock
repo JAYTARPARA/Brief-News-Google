@@ -183,6 +183,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.2"
+  facebook_audience_network:
+    dependency: "direct main"
+    description:
+      name: facebook_audience_network
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0"
   firebase_admob:
     dependency: "direct main"
     description:
