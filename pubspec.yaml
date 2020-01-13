@@ -1,6 +1,6 @@
 name: google_news
-description: Brief News - A google news app which will show you latest news based on category from all around the world. Brief News. Short News. Google News. inshorts. India News. Flutter News. Latest News. BN. Top headlines. 60 words news. Tookma.
-version: 1.0.2+10
+description: Brief News - A google news app which will show you latest news based on category from all around the world. Brief News. Short News. Google News. inshorts. India News. Flutter News. Latest News. BN. Top headlines. 60 words news. Tookma. Brief News. brief news.
+version: 1.0.3+11
 
 environment:
   sdk: ">=2.1.0 <3.0.0"

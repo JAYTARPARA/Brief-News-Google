@@ -52,16 +52,16 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    // FirebaseAdMob.instance
-    //     .initialize(appId: 'ca-app-pub-4800441463353851~6558594714')
-    //     .then((response) {
-    //   myBanner
-    //     ..load()
-    //     ..show(
-    //       // Banner Position
-    //       anchorType: AnchorType.bottom,
-    //     );
-    // });
+    FirebaseAdMob.instance
+        .initialize(appId: 'ca-app-pub-4800441463353851~6558594714')
+        .then((response) {
+      myBanner
+        ..load()
+        ..show(
+          // Banner Position
+          anchorType: AnchorType.bottom,
+        );
+    });
 
     // 5 Minutes
     FirebaseAdMob.instance

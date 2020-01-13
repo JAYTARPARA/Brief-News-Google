@@ -67,8 +67,8 @@ class HomeScreen extends StatelessWidget {
     }
 
     return Padding(
-      // padding: EdgeInsets.only(bottom: getSmartBannerHeight(mediaQuery)),
-      padding: EdgeInsets.only(bottom: 0.0),
+      padding: EdgeInsets.only(bottom: getSmartBannerHeight(mediaQuery)),
+      // padding: EdgeInsets.only(bottom: 0.0),
       child: Scaffold(
         key: scaffoldState,
         body: DoubleBackToCloseApp(
@@ -114,7 +114,7 @@ class HomeScreen extends StatelessWidget {
                 Expanded(
                   child: WidgetLatestNews(),
                 ),
-                _showFacebookBannerads(context),
+                // _showFacebookBannerads(context),
                 _showFacebookInterstitialAd(context),
               ],
             ),
@@ -688,15 +688,15 @@ InterstitialAd myInterstitial = InterstitialAd(
   },
 );
 
-// BannerAd myBanner = BannerAd(
-//   // Replace the testAdUnitId with an ad unit id from the AdMob dash.
-//   // https://developers.google.com/admob/android/test-ads
-//   // https://developers.google.com/admob/ios/test-ads
-//   // adUnitId: BannerAd.testAdUnitId,
-//   adUnitId: 'ca-app-pub-4800441463353851/6951446578',
-//   size: AdSize.smartBanner,
-//   // targetingInfo: targetingInfo,
-//   listener: (MobileAdEvent event) {
-//     print("BannerAd event is $event");
-//   },
-// );
+BannerAd myBanner = BannerAd(
+  // Replace the testAdUnitId with an ad unit id from the AdMob dash.
+  // https://developers.google.com/admob/android/test-ads
+  // https://developers.google.com/admob/ios/test-ads
+  // adUnitId: BannerAd.testAdUnitId,
+  adUnitId: 'ca-app-pub-4800441463353851/6951446578',
+  size: AdSize.smartBanner,
+  // targetingInfo: targetingInfo,
+  listener: (MobileAdEvent event) {
+    print("BannerAd event is $event");
+  },
+);
