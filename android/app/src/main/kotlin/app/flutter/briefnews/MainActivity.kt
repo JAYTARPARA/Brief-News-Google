@@ -1,4 +1,4 @@
-package io.flutter.google_news
+package app.flutter.briefnews
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
